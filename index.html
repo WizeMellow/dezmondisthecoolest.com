@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: #0c0c0c;
+      }
+
+      a {
+        position: relative;
+        padding: 20px 50px;
+        display: block;
+        text-decoration: none;
+        text-transform: uppercase;
+        width: 200px;
+        overflow: hidden;
+        border-radius: 40px;
+      }
+
+      a span {
+        position: relative;
+        color: #fff;
+        fot-size: 20px;
+        font-family: Arial;
+        letter-spacing: 8px;
+        z-index: 1;
+      }
+
+      a .liquid {
+        position: absolute;
+        top: -80px;
+        left: 0;
+        width: 200px;
+        height: 200px;
+        background: #4973ff;
+        box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+        transition: 0.5s;
+      }
+
+      a .liquid::after,
+      a .liquid::before {
+        content: "";
+        width: 200%;
+        height: 200%;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -75%);
+        background: #000;
+      }
+
+      a .liquid::before {
+        border-radius: 45%;
+        background: rgba(20, 20, 20, 1);
+        animation: animate 5s linear infinite;
+      }
+
+      a .liquid::after {
+        border-radius: 40%;
+        background: rgba(20, 20, 20, 0.5);
+        animation: animate 10s linear infinite;
+      }
+
+      a:hover .liquid {
+        top: -120px;
+      }
+
+      @keyframes animate {
+        0% {
+          transform: translate(-50%, -75%) rotate(0deg);
+        }
+        100% {
+          transform: translate(-50%, -75%) rotate(360deg);
+        }
+      }
+      #changingText {
+        color: white;
+        font-size: 24px; /* Adjust the font size as needed */
+      }
+    </style>
+  </head>
+  <body>
+    <a href="#" id="button">
+      <span>Dez is</span>
+      <div class="liquid"></div>
+    </a>
+    <div
+      id="textContainer"
+      style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        display: none;
+      ">
+      <span id="changingText" style="color: white"></span>
+    </div>
+    <script>
+      const button = document.getElementById("button");
+      const textContainer = document.getElementById("textContainer");
+      const changingText = document.getElementById("changingText");
+      const textArray = [
+        "Loving",
+        "Caring",
+        "Inspiring",
+        "Supportive",
+        "Beutifull",
+        "Generous",
+        "Artistic!!!",
+        "Uplifting",
+        "Motivating",
+        "Positive",
+        "Thoughtful",
+        "Kindhearted",
+        "Encouraging",
+        "Amazing",
+      ];
+      let currentIndex = 0;
+      let textIndex = 0;
+      let typingInterval;
+
+      button.addEventListener("click", () => {
+        // Hide the button
+        button.style.display = "none";
+
+        // Show the text container
+        textContainer.style.display = "block";
+
+        // Function to type out the text
+        function typeText() {
+          if (textIndex < textArray[currentIndex].length) {
+            changingText.textContent += textArray[currentIndex][textIndex];
+            textIndex++;
+          } else {
+            // Finished typing this word, reset and move to the next word
+            clearInterval(typingInterval);
+            setTimeout(() => {
+              changingText.textContent = "";
+              currentIndex = (currentIndex + 1) % textArray.length;
+              textIndex = 0;
+              typingInterval = setInterval(typeText, 100);
+            }, 1000); // Delay before moving to the next word
+          }
+        }
+
+        // Start typing the first word
+        typingInterval = setInterval(typeText, 100);
+      });
+    </script>
+  </body>
+</html>
